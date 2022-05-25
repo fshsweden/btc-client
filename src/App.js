@@ -128,7 +128,7 @@ function App() {
     <>
       <Navbar bg="primary" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">BTC Overview</Navbar.Brand>
+          <Navbar.Brand href="#home">BTC Overview ({process.env.REACT_APP_BACKEND})</Navbar.Brand>
           {/* <Nav className="me-auto">
             <Nav.Link href="#overview">Overview</Nav.Link>
             <Nav.Link href="#details">Details</Nav.Link>
@@ -147,11 +147,11 @@ function App() {
             })}
           </Col>
           <Col>
-          <div class="medianclose">Median:{Number(medianClose).toFixed(4)}</div>
+          <div className="medianclose">Median:{Number(medianClose).toFixed(4)}</div>
           </Col>
           <Col>
-            <div class="bestbid">BestBid:{Number(bestBid).toFixed(4)}</div> 
-            <div class="bestask">BestAsk:{Number(bestAsk).toFixed(4)}</div>
+            <div className="bestbid">BestBid:{Number(bestBid).toFixed(4)}</div> 
+            <div className="bestask">BestAsk:{Number(bestAsk).toFixed(4)}</div>
           </Col>
         </Row>
         <Row>

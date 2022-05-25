@@ -22,13 +22,13 @@ function CryptoExchange(props) {
     // More status colors here.............
 
     return <>
-        <Card _class="mycard" style={{ ...bg, padding:'10px', textAlign: 'center', width: '350px' }}>
+        <Card style={{ ...bg, padding:'10px', textAlign: 'center', width: '350px' }}>
             {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
             <h3>{props.name}</h3>
             <Card.Body>
                 {/* <Card.Title>market</Card.Title> */}
                 <Card.Text>
-                    <div class="bid">{Number(props.data.bid).toFixed(4)}</div> - <div class="ask">{Number(props.data.ask).toFixed(4)}</div>
+                    <div className="bid">{Number(props.data.bid).toFixed(4)}</div> - <div className="ask">{Number(props.data.ask).toFixed(4)}</div>
                     
                     {/* <li>Close: {Number(props.data.close).toFixed(4)}</li> */}
                     
