@@ -29,7 +29,7 @@ function CryptoExchange(props) {
                 {/* <Card.Title>market</Card.Title> */}
                 <Card.Text>
                     <div class="bid">{Number(props.data.bid).toFixed(4)}</div> - <div class="ask">{Number(props.data.ask).toFixed(4)}</div>
-                    <div class="bidqty">{Number(100).toFixed(4)}</div> - <div class="askqty">{Number(100).toFixed(4)}</div>
+                    
                     {/* <li>Close: {Number(props.data.close).toFixed(4)}</li> */}
                     
                 </Card.Text>

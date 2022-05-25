@@ -39,7 +39,7 @@ function App() {
   const [bestAsk, setBestAsk] = useState(0.0);
   const [medianClose, setMedianClose] = useState(0.0);
 
-  const root_url = "http://localhost:5051";
+  const root_url = process.env.REACT_APP_BACKEND;
 
 
   const getProductListAsSelectOptions = () => {
@@ -140,18 +140,18 @@ function App() {
 
       <Container>
         <Row>
-          <Col>
-          <span>Product:</span>
-          </Col>
           <Col xs={12} sm={6} lg={4}>
-            
             <Select options={getProductListAsSelectOptions()} onChange={handleProductSelected} />
             {[...error].map(x => {
               return <p>{x}</p>
             })}
           </Col>
           <Col>
-            BestBid: {Number(bestBid).toFixed(4)} BestAsk: {Number(bestAsk).toFixed(4)} Median Close: {Number(medianClose).toFixed(4)}
+          <div class="medianclose">Median:{Number(medianClose).toFixed(4)}</div>
+          </Col>
+          <Col>
+            <div class="bestbid">BestBid:{Number(bestBid).toFixed(4)}</div> 
+            <div class="bestask">BestAsk:{Number(bestAsk).toFixed(4)}</div>
           </Col>
         </Row>
         <Row>
