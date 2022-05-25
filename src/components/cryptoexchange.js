@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { Card, Jumbotron, Button, Container, Col, Row } from 'react-bootstrap';
 
+import "./cryptoexchange.css"
+
 function CryptoExchange(props) {
     const [name, setName] = useState(props.name);
-
-    // const bgStyle = {border: '2px solid green', width:'40%', listStyleType:'none'}
-    const bgStyle = {background: 'green'}
 
     let bg = {background: 'white'};
 
@@ -23,17 +22,18 @@ function CryptoExchange(props) {
     // More status colors here.............
 
     return <>
-        <Card style={{ padding:'10px', textAlign: 'center', width: '250px' }}>
+        <Card _class="mycard" style={{ ...bg, padding:'10px', textAlign: 'center', width: '350px' }}>
             {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
             <h3>{props.name}</h3>
-            <Card.Body style={bg}>
+            <Card.Body>
                 {/* <Card.Title>market</Card.Title> */}
                 <Card.Text>
-                    {Number(props.data.bid).toFixed(4)} - {Number(props.data.ask).toFixed(4)}
-                    <li>Close: {Number(props.data.close).toFixed(4)}</li>
+                    <div class="bid">{Number(props.data.bid).toFixed(4)}</div> - <div class="ask">{Number(props.data.ask).toFixed(4)}</div>
+                    <div class="bidqty">{Number(100).toFixed(4)}</div> - <div class="askqty">{Number(100).toFixed(4)}</div>
+                    {/* <li>Close: {Number(props.data.close).toFixed(4)}</li> */}
                     
                 </Card.Text>
-                <Button variant="primary">Goto exchange</Button>
+                {/* <Button variant="primary">Goto exchange</Button> */}
             </Card.Body>
         </Card>
     </>

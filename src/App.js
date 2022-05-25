@@ -39,7 +39,7 @@ function App() {
   const [bestAsk, setBestAsk] = useState(0.0);
   const [medianClose, setMedianClose] = useState(0.0);
 
-  const root_url = "http://localhost:5000";
+  const root_url = "http://localhost:5051";
 
 
   const getProductListAsSelectOptions = () => {
@@ -140,19 +140,11 @@ function App() {
 
       <Container>
         <Row>
-
-          {/* How wide should column be in this resolution? */}
-          <Col xs={12} sm={6} lg={1} >
-            {/* <Button onClick={handleClickUpdateButton}>Update</Button> */}
+          <Col>
+          <span>Product:</span>
           </Col>
-
-          {/* <Col xs={12} sm={6} lg={4}  style={{backgroundColor:'green'}}>
-          <Select options={getExchangeListAsSelectOptions()} onChange={handleExchangeSelected} />
-        </Col> */}
-        </Row>
-
-        <Row>
           <Col xs={12} sm={6} lg={4}>
+            
             <Select options={getProductListAsSelectOptions()} onChange={handleProductSelected} />
             {[...error].map(x => {
               return <p>{x}</p>
@@ -168,15 +160,6 @@ function App() {
             <CryptoExchange key={k} name={k} data={ticker.get(k)} bestBid={bestBid} bestAsk={bestAsk}/>
             </Col>
             ))}
-        </Row>
-
-        <Row>
-          <Col xs={12} sm={6} lg={4} style={{ backgroundColor: 'red' }}>
-          </Col>
-          <Col xs={12} sm={6} lg={4} style={{ backgroundColor: 'yellow' }}>
-          </Col>
-          <Col xs={12} sm={6} lg={4} style={{ backgroundColor: 'cyan' }}>
-          </Col>
         </Row>
 
       </Container>

@@ -1,0 +1,20 @@
+.bid,.bidqty {
+    font-size: 1.5em;
+    display:inline-block;
+    background-color: gray;
+    color:aliceblue;
+    padding: 5px;
+}
+
+.ask,.askqty {
+    font-size: 1.5em;
+    display:inline-block;
+    background-color: black;
+    color:aliceblue;
+    padding: 5px;
+}
+
+.mycard {
+    background-color: yellow;
+    margin: 10px;
+}
