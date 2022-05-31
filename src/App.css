@@ -1,24 +1,87 @@
 .bestbid {
-  font-size: 1.8em;
+  font-size: 1em;
   background-color: gray;
   color: white;
-  display: inline-block;
-  padding: 10px;
 }
 
 .bestask {
-  font-size: 1.8em;
+  font-size: 1em;
   background-color: black;
   color: white;
-  display: inline-block;
-  padding: 10px;
 }
 
 .medianclose {
-  font-size: 1.8em;
+  font-size: 1em;
   background-color: cornflowerblue;
   color: white;
+}
+
+.center_container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 1.8em;
+  color: white;
+  font-family: arial;
+  font-size: 24px;
+  /* margin: 25px;
+  width: 350px;
+  height: 200px; */
+  outline: solid 1px black;
+}
+
+.center_container .content {
+  background-color: rosybrown;
+  /* Center horizontally*/
+  text-align: center;
+}
+
+.selection_container {
+  margin: auto;
+}
+
+div.selection_container  {
+  margin-bottom: 10px;
+}
+
+div.selection_container div {
+  text-align: center;
   display: inline-block;
-  padding: 10px;
-  margin-left: 25px;
+  color: white;
+}
+
+.market_container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: white;
+  font-family: arial;
+  outline: solid 3px black;
+  /* text-align: center; */
+}
+
+.market_container .title {
+  background-color: cornflowerblue;
+  /* Center horizontally*/
+  text-align: center;
+}
+
+.bid,.bidqty {
+  font-size: 1.2em;
+  display:inline-block;
+  /* background-color: gray; */
+  color: blue;
+  padding: 5px;
+}
+
+.ask,.askqty {
+  font-size: 1.2em;
+  display:inline-block;
+  /* background-color: black; */
+  color:red;
+  padding: 5px;
+}
+
+.mycard {
+  background-color: yellow;
+  margin: 10px;
 }

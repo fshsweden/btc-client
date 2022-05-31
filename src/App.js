@@ -23,14 +23,16 @@ import { NavDropdown, Navbar, Nav, Toast, Button, Card, Jumbotron, Container, Co
 import axios from 'axios';
 import Select, { components } from 'react-select';
 import CryptoExchange from './components/cryptoexchange';
+import Switch from './components/tristate';
 
 import './App.css';
 
 function App() {
 
+  const [decimals, setDecimals] = useState(2);
   const [exchange, setExchange] = useState("");
   const [product, setProduct] = useState([]);
-  const [productList, setProductList] = useState(["BTC/USD","BTC/USDT","ETH/BTC"]);
+  const [productList, setProductList] = useState(["BTC/USD", "BTC/USDT", "ETH/BTC"]);
 
   // const [data, setData] = useState(new Map());
   const [ticker, setTicker] = useState(new Map());
@@ -40,7 +42,6 @@ function App() {
   const [medianClose, setMedianClose] = useState(0.0);
 
   const root_url = process.env.REACT_APP_BACKEND;
-
 
   const getProductListAsSelectOptions = () => {
     var result = productList.map((name, index) => {
@@ -64,7 +65,7 @@ function App() {
         let m = new Map(Object.entries(res.data.ticker));
 
         // Calculate median of close values to find outliers (note some have null values!)
-        let close_values = [...m.entries()].map(a => (a[1] == null ? 0.0 : a[1].close)); 
+        let close_values = [...m.entries()].map(a => (a[1] == null ? 0.0 : a[1].close));
         console.log(close_values);
         let mc = median(close_values);
         setMedianClose(mc);
@@ -101,6 +102,45 @@ function App() {
       });
   }
 
+  const [statusBid, setStatusBid] = useState("green");
+  const [statusAsk, setStatusAsk] = useState("gray");
+  const [statusSpread, setStatusSpread] = useState("gray");
+  const [statusClose, setStatusClose] = useState("gray");
+
+  const handleClickBid = () => {
+    if (statusBid !== "green") {
+      setStatusSpread("gray");
+      setStatusBid("green");
+      setStatusAsk("gray");
+
+      let newticker = [...ticker.entries()].sort((a, b) => a[1].bid < b[1].bid ? 1 : -1);
+      setTicker(new Map(newticker));
+    }
+  };
+
+  const handleClickAsk = () => {
+    if (statusAsk !== "green") {
+      setStatusSpread("gray");
+      setStatusBid("gray");
+      setStatusAsk("green");
+
+      let newticker = [...ticker.entries()].sort((a, b) => a[1].ask > b[1].ask ? 1 : -1);
+      setTicker(new Map(newticker));
+    }
+  };
+
+  const handleClickSpread = () => {
+    if (statusSpread !== "green") {
+      setStatusSpread("green");
+      setStatusBid("gray");
+      setStatusAsk("gray");
+
+      let newticker = [...ticker.entries()].sort((a, b) => (a[1].ask-a[1].bid) > (b[1].ask - b[1].bid) ? 1 : -1);
+      setTicker(new Map(newticker));
+    }
+  };
+
+
   const addError = (err) => {
     setError(prevState => {
       let newState = new Array(prevState);
@@ -118,8 +158,12 @@ function App() {
     console.log("Product selected! " + evt.label);
     setProduct(evt.label);
 
-    // setTicker(new Map());
-    // get_all_exchanges_with_product(evt.label);
+    if (evt.label === "BTC/USD" || evt.label == "BTC/USDT") {
+      setDecimals(2);
+    }
+    else {
+      setDecimals(4);
+    }
     get_all_tickers(evt.label)
   }
 
@@ -146,20 +190,37 @@ function App() {
               return <p>{x}</p>
             })}
           </Col>
+        </Row>
+        <Row>
           <Col>
-          <div className="medianclose">Median:{Number(medianClose).toFixed(4)}</div>
-          </Col>
-          <Col>
-            <div className="bestbid">BestBid:{Number(bestBid).toFixed(4)}</div> 
-            <div className="bestask">BestAsk:{Number(bestAsk).toFixed(4)}</div>
+            <div class="center_container">
+              <div class="content">{Number(medianClose).toFixed(decimals)}</div>
+              {/* <div class="content">Median:{Number(medianClose).toFixed(4)}</div>
+              <div class="content bestbid">BestBid:{Number(bestBid).toFixed(4)}</div>
+              <div class="content bestask">BestAsk:{Number(bestAsk).toFixed(4)}</div> */}
+            </div>
           </Col>
         </Row>
         <Row>
-          {[...ticker.keys()].map(k => (
-            <Col>
-            <CryptoExchange key={k} name={k} data={ticker.get(k)} bestBid={bestBid} bestAsk={bestAsk}/>
-            </Col>
+          <Col>
+            <div class="selection_container">
+              Sort markets by:
+              <Switch label={"Bid"} onClick={handleClickBid} color={statusBid} />
+              <Switch label={"Ask"} onClick={handleClickAsk} color={statusAsk} />
+              <Switch label={"Spread"} onClick={handleClickSpread} color={statusSpread} />
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {[...ticker.keys()].map(k => (
+              <div class="market_container">
+                <CryptoExchange decimals={decimals} key={k} name={k} data={ticker.get(k)} bestBid={bestBid} bestAsk={bestAsk} />
+              </div>
             ))}
+          </Col>
+        </Row>
+        <Row>
         </Row>
 
       </Container>

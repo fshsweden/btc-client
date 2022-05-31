@@ -1,36 +1,50 @@
 import React, {useEffect, useState} from 'react';
-import { Card, Jumbotron, Button, Container, Col, Row } from 'react-bootstrap';
+import { Collapse, Card, Jumbotron, Button, Container, Col, Row } from 'react-bootstrap';
 
-import "./cryptoexchange.css"
+// import "./cryptoexchange.css"
 
 function CryptoExchange(props) {
     const [name, setName] = useState(props.name);
+    const [open, setOpen] = useState(false);
 
     let bg = {background: 'white'};
 
-    if (props.data.bid > props.data.ask) {
-        bg = {background: 'red'};
-    }
+    // Flag certain markets with colors
+    // 
+    // if (props.data.bid > props.data.ask) {
+    //     bg = {background: 'red'};
+    // }
 
-    if (props.data.bid === props.bestBid) {
-        bg = {background: 'cyan'};
-    }
-    else if (props.data.ask === props.bestAsk) {
-        bg = {background: 'green'};
-    }
-
-    // More status colors here.............
+    // if (props.data.bid === props.bestBid) {
+    //     bg = {background: 'cyan'};
+    // }
+    // else if (props.data.ask === props.bestAsk) {
+    //     bg = {background: 'green'};
+    // }
 
     return <>
-        <Card style={{ ...bg, padding:'10px', textAlign: 'center', width: '350px' }}>
+        <Card style={{ ...bg }}>
             {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-            <h3>{props.name}</h3>
+
+            <div class="">
+            <div class="title">{props.name}</div>
+            </div>
+
             <Card.Body>
                 {/* <Card.Title>market</Card.Title> */}
                 <Card.Text>
-                    <div className="bid">{Number(props.data.bid).toFixed(4)}</div> - <div className="ask">{Number(props.data.ask).toFixed(4)}</div>
                     
-                    {/* <li>Close: {Number(props.data.close).toFixed(4)}</li> */}
+                    <div onClick={() => setOpen(!open)} className="bid">{Number(props.data.bid).toFixed(props.decimals)}</div>
+                    <div onClick={() => setOpen(!open)} className="ask">{Number(props.data.ask).toFixed(props.decimals)}</div>
+                    <div onClick={() => setOpen(!open)} className="ask">({Number(props.data.ask-props.data.bid).toFixed(props.decimals)})</div>
+
+                    <Collapse in={open}>
+                        <div class="text-reveal">
+                            lkhl kh jklh jklh klhkljsdfhl khklh klsdfh klsdfhkl h3klhl klhkljsdfhl
+                            klhsdfkl hkl sklh sdfklh lksh lkh lkh klsdfh lkh klsdfh
+                            klhsdfkl klsdfklh klh klsdfh klh lk k
+                        </div>
+                    </Collapse> */
                     
                 </Card.Text>
                 {/* <Button variant="primary">Goto exchange</Button> */}
