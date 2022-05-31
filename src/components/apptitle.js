@@ -23,8 +23,8 @@ function AppTitle(props) {
     // More status colors here.............
 
     return <>
-        <div class="">
-        <div class="title">{props.name}</div>
+        <div className="">
+        <div className="title">{props.name}</div>
         </div>
     </>
 }

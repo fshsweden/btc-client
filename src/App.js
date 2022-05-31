@@ -168,8 +168,7 @@ function App() {
   }
 
 
-  return <div>
-    <>
+  return <>
       <Navbar bg="primary" variant="dark">
         <Container>
           <Navbar.Brand href="#home">BTC Overview ({process.env.REACT_APP_BACKEND})</Navbar.Brand>
@@ -186,35 +185,32 @@ function App() {
         <Row>
           <Col xs={12} sm={6} lg={4}>
             <Select options={getProductListAsSelectOptions()} onChange={handleProductSelected} />
-            {[...error].map(x => {
-              return <p>{x}</p>
-            })}
+            {/* {[...error].map(x => {
+              return {x}
+            })} */}
           </Col>
         </Row>
         <Row>
           <Col>
-            <div class="center_container">
-              <div class="content">{Number(medianClose).toFixed(decimals)}</div>
-              {/* <div class="content">Median:{Number(medianClose).toFixed(4)}</div>
-              <div class="content bestbid">BestBid:{Number(bestBid).toFixed(4)}</div>
-              <div class="content bestask">BestAsk:{Number(bestAsk).toFixed(4)}</div> */}
+            <div className="center_container">
+              <div className="content">{Number(medianClose).toFixed(decimals)}</div>
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
-            <div class="selection_container">
+            <div className="selection_container">
               Sort markets by:
-              <Switch label={"Bid"} onClick={handleClickBid} color={statusBid} />
-              <Switch label={"Ask"} onClick={handleClickAsk} color={statusAsk} />
-              <Switch label={"Spread"} onClick={handleClickSpread} color={statusSpread} />
+              <Switch key={"Bid"} label={"Bid"} onClick={handleClickBid} color={statusBid} />
+              <Switch key={"Ask"} label={"Ask"} onClick={handleClickAsk} color={statusAsk} />
+              <Switch key={"Spread"} label={"Spread"} onClick={handleClickSpread} color={statusSpread} />
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
             {[...ticker.keys()].map(k => (
-              <div class="market_container">
+              <div key={k.name} className="market_container">
                 <CryptoExchange decimals={decimals} key={k} name={k} data={ticker.get(k)} bestBid={bestBid} bestAsk={bestAsk} />
               </div>
             ))}
@@ -225,7 +221,7 @@ function App() {
 
       </Container>
     </>
-  </div>
+  
 }
 
 export default App;

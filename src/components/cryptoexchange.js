@@ -26,27 +26,25 @@ function CryptoExchange(props) {
         <Card style={{ ...bg }}>
             {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
 
-            <div class="">
-            <div class="title">{props.name}</div>
-            </div>
+            <div className="title">{props.name}</div>
 
             <Card.Body>
                 {/* <Card.Title>market</Card.Title> */}
                 <Card.Text>
-                    
-                    <div onClick={() => setOpen(!open)} className="bid">{Number(props.data.bid).toFixed(props.decimals)}</div>
-                    <div onClick={() => setOpen(!open)} className="ask">{Number(props.data.ask).toFixed(props.decimals)}</div>
-                    <div onClick={() => setOpen(!open)} className="ask">({Number(props.data.ask-props.data.bid).toFixed(props.decimals)})</div>
+                </Card.Text>
+
+                <p onClick={() => setOpen(!open)} className="bid">{Number(props.data.bid).toFixed(props.decimals)}</p>
+                    <p onClick={() => setOpen(!open)} className="ask">{Number(props.data.ask).toFixed(props.decimals)}</p>
+                    <p onClick={() => setOpen(!open)} className="ask">({Number(props.data.ask-props.data.bid).toFixed(props.decimals)})</p>
 
                     <Collapse in={open}>
-                        <div class="text-reveal">
+                        <div className="text-reveal">
                             lkhl kh jklh jklh klhkljsdfhl khklh klsdfh klsdfhkl h3klhl klhkljsdfhl
                             klhsdfkl hkl sklh sdfklh lksh lkh lkh klsdfh lkh klsdfh
                             klhsdfkl klsdfklh klh klsdfh klh lk k
                         </div>
                     </Collapse> */
-                    
-                </Card.Text>
+
                 {/* <Button variant="primary">Goto exchange</Button> */}
             </Card.Body>
         </Card>
