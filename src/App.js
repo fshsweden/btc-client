@@ -19,9 +19,9 @@
 */
 
 import React, { useEffect, useState } from 'react';
-import { NavDropdown, Navbar, Nav, Toast, Button, Card, Jumbotron, Container, Col, Row } from 'react-bootstrap';
+import { Navbar, Container, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
-import Select, { components } from 'react-select';
+import Select from 'react-select';
 import CryptoExchange from './components/cryptoexchange';
 import Switch from './components/tristate';
 
@@ -58,8 +58,10 @@ function App() {
 
   const get_all_tickers = async (product) => {
     setTicker(new Map());
-    return axios.get(`${root_url}//getticker?product=${product}`)
+    return axios.get(`${root_url}/getticker?product=${product}`)
       .then(res => {
+
+        console.log(res);
 
         // Convert Object to Map
         let m = new Map(Object.entries(res.data.ticker));
@@ -84,13 +86,13 @@ function App() {
         console.log("Finding best bid/ask:");
         let bestBid = [...m.entries()]
           .filter((x) => x[1] != null)
-          .filter((x) => x[1].ask != 0.0)
-          .filter((x) => x[1].bid != null)
+          .filter((x) => x[1].ask !== 0.0)
+          .filter((x) => x[1].bid !== null)
           .reduce((a, b) => a[1].bid > b[1].bid ? a : b);
         let bestAsk = [...m.entries()]
           .filter((x) => x[1] != null)
-          .filter((x) => x[1].ask != 0.0)
-          .filter((x) => x[1].ask != null)
+          .filter((x) => x[1].ask !== 0.0)
+          .filter((x) => x[1].ask !== null)
           .reduce((a, b) => a[1].ask < b[1].ask ? a : b);
 
 
@@ -102,7 +104,8 @@ function App() {
       });
   }
 
-  const [statusBid, setStatusBid] = useState("green");
+  const [statusAlpha, setStatusAlpha] = useState("green");
+  const [statusBid, setStatusBid] = useState("gray");
   const [statusAsk, setStatusAsk] = useState("gray");
   const [statusSpread, setStatusSpread] = useState("gray");
   const [statusClose, setStatusClose] = useState("gray");
@@ -110,6 +113,7 @@ function App() {
   const handleClickBid = () => {
     if (statusBid !== "green") {
       setStatusSpread("gray");
+      setStatusAlpha("gray");
       setStatusBid("green");
       setStatusAsk("gray");
 
@@ -121,6 +125,7 @@ function App() {
   const handleClickAsk = () => {
     if (statusAsk !== "green") {
       setStatusSpread("gray");
+      setStatusAlpha("gray");
       setStatusBid("gray");
       setStatusAsk("green");
 
@@ -132,6 +137,7 @@ function App() {
   const handleClickSpread = () => {
     if (statusSpread !== "green") {
       setStatusSpread("green");
+      setStatusAlpha("gray");
       setStatusBid("gray");
       setStatusAsk("gray");
 
@@ -140,25 +146,36 @@ function App() {
     }
   };
 
+  const handleClickAlpha = () => {
+    if (statusAlpha !== "green") {
+      setStatusAlpha("green");
+      setStatusSpread("gray");
+      setStatusBid("gray");
+      setStatusAsk("gray");
 
-  const addError = (err) => {
-    setError(prevState => {
-      let newState = new Array(prevState);
-      newState.push(err);
-      return newState;
-    });
-  }
+      let newticker = [...ticker.entries()].sort((a, b) => (a[0] > b[0]) ? 1 : -1);
+      setTicker(new Map(newticker));
+    }
+  };
 
-  const handleExchangeSelected = (evt) => {
-    console.log("Exchange selected! " + evt.label);
-    setExchange(evt.label);
-  }
+  // const addError = (err) => {
+  //   setError(prevState => {
+  //     let newState = new Array(prevState);
+  //     newState.push(err);
+  //     return newState;
+  //   });
+  // }
+
+  // const handleExchangeSelected = (evt) => {
+  //   console.log("Exchange selected! " + evt.label);
+  //   setExchange(evt.label);
+  // }
 
   const handleProductSelected = (evt) => {
     console.log("Product selected! " + evt.label);
     setProduct(evt.label);
 
-    if (evt.label === "BTC/USD" || evt.label == "BTC/USDT") {
+    if (evt.label === "BTC/USD" || evt.label === "BTC/USDT") {
       setDecimals(2);
     }
     else {
@@ -167,8 +184,7 @@ function App() {
     get_all_tickers(evt.label)
   }
 
-
-  return <>
+   return <>
       <Navbar bg="primary" variant="dark">
         <Container>
           <Navbar.Brand href="#home">BTC Overview ({process.env.REACT_APP_BACKEND})</Navbar.Brand>
@@ -201,22 +217,28 @@ function App() {
           <Col>
             <div className="selection_container">
               Sort markets by:
+              <Switch key={"Alpha"} label={"Alpha"} onClick={handleClickAlpha} color={statusAlpha} />
               <Switch key={"Bid"} label={"Bid"} onClick={handleClickBid} color={statusBid} />
               <Switch key={"Ask"} label={"Ask"} onClick={handleClickAsk} color={statusAsk} />
               <Switch key={"Spread"} label={"Spread"} onClick={handleClickSpread} color={statusSpread} />
+
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
-            {[...ticker.keys()].map(k => (
-              <div key={k.name} className="market_container">
+            {
+              [...ticker.keys()].map(k => (
+              <div key={k} className="market_container">
                 <CryptoExchange decimals={decimals} key={k} name={k} data={ticker.get(k)} bestBid={bestBid} bestAsk={bestAsk} />
               </div>
             ))}
           </Col>
         </Row>
         <Row>
+          {
+            
+          }
         </Row>
 
       </Container>
