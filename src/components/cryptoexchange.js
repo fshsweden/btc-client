@@ -22,15 +22,13 @@ function CryptoExchange(props) {
 
                 <p onClick={() => setOpen(!open)} className="bid">{Number(props.data.bid).toFixed(props.decimals)}</p>
                     <p onClick={() => setOpen(!open)} className="ask">{Number(props.data.ask).toFixed(props.decimals)}</p>
-                    <p onClick={() => setOpen(!open)} className="ask">({Number(props.data.ask-props.data.bid).toFixed(props.decimals)})</p>
+                    <p onClick={() => setOpen(!open)} className="decimals">({Number(props.data.ask-props.data.bid).toFixed(props.decimals)})</p>
 
                     <Collapse in={open}>
                         <div className="text-reveal">
-                            lkhl kh jklh jklh klhkljsdfhl khklh klsdfh klsdfhkl h3klhl klhkljsdfhl
-                            klhsdfkl hkl sklh sdfklh lksh lkh lkh klsdfh lkh klsdfh
-                            klhsdfkl klsdfklh klh klsdfh klh lk k
+                            Some more data here...
                         </div>
-                    </Collapse> */
+                    </Collapse>
 
                 {/* <Button variant="primary">Goto exchange</Button> */}
             </Card.Body>

@@ -174,6 +174,11 @@ function App() {
   const handleProductSelected = (evt) => {
     console.log("Product selected! " + evt.label);
     setProduct(evt.label);
+    
+    setStatusAlpha("green");
+    setStatusSpread("gray");
+    setStatusBid("gray");
+    setStatusAsk("gray");
 
     if (evt.label === "BTC/USD" || evt.label === "BTC/USDT") {
       setDecimals(2);
@@ -209,14 +214,14 @@ function App() {
         <Row>
           <Col>
             <div className="center_container">
-              <div className="content">{Number(medianClose).toFixed(decimals)}</div>
+              <div className="content">Median price: {Number(medianClose).toFixed(decimals)}</div>
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
             <div className="selection_container">
-              Sort markets by:
+              Sort by:
               <Switch key={"Alpha"} label={"Alpha"} onClick={handleClickAlpha} color={statusAlpha} />
               <Switch key={"Bid"} label={"Bid"} onClick={handleClickBid} color={statusBid} />
               <Switch key={"Ask"} label={"Ask"} onClick={handleClickAsk} color={statusAsk} />
