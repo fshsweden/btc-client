@@ -61,10 +61,10 @@ function App() {
     return axios.get(`${root_url}/getticker?product=${product}`)
       .then(res => {
 
-        console.log(res);
+        console.log(res.data);
 
         // Convert Object to Map
-        let m = new Map(Object.entries(res.data.ticker));
+        let m = new Map(Object.entries(res.data));
 
         // Calculate median of close values to find outliers (note some have null values!)
         let close_values = [...m.entries()].map(a => (a[1] == null ? 0.0 : a[1].close));
