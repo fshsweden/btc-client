@@ -1,13 +1,13 @@
 /*
-  BTC Info
+  btc-client
 
   Example React application that talks to a Python backend, connected via CCXT to 
   multiple crypto exchanges.
 
   This app queries the backend for existing exchanges and products
 
-  The user can slect a product (like the BTC/USDT pair), and get the current price
-  of thatpair from all exchanegs that supports it.
+  The user can select a product (like the BTC/USDT pair), and get the current price
+  of that pair from all exchanegs that supports it.
 
   This example app shows several techniques, such as
 
@@ -33,10 +33,9 @@ function App() {
   const [exchange, setExchange] = useState("");
   const [product, setProduct] = useState([]);
   const [productList, setProductList] = useState(["BTC/USD", "BTC/USDT", "ETH/BTC"]);
-
   // const [data, setData] = useState(new Map());
   const [ticker, setTicker] = useState(new Map());
-  const [error, setError] = useState([]);
+  const [error, setError] = useState("");
   const [bestBid, setBestBid] = useState(0.0);
   const [bestAsk, setBestAsk] = useState(0.0);
   const [medianClose, setMedianClose] = useState(0.0);
@@ -56,30 +55,70 @@ function App() {
     return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
   };
 
+
+  const get_good_close_values = (m) => {
+    let close_values = [...m.entries()].map(a => {
+      console.log(a);
+      return (a[1] == null ? 0.0 : a[1].bid);
+    });
+    return close_values;
+  }
+
+  /*
+    indata: Map
+    outdata: Map
+  */
+  const filter_outliers_and_errors = (mc, m) => {
+
+    m = [...m.entries()];
+
+    m = m.filter(x => x[1] != null)
+    .filter(x => x[1].bid != null && x[1].ask != null);
+
+    // we have no close right now!!!
+    // .filter(x => (x[1].close / mc > 0.98) && (x[1].close / mc < 1.02));
+    // We really need it as a Map()
+    m = new Map(m);
+    return m;
+
+  }
+
   const get_all_tickers = async (product) => {
     setTicker(new Map());
+    setError("");
     return axios.get(`${root_url}/getticker?product=${product}`)
       .then(res => {
 
-        console.log(res.data);
+        // const m1 = new Map(
+        //   res.data.map(object => {
+        //     return [object.key, object.value];
+        //   }),
+        // );
+
+        let m = new Map();
+        let counter = 0;
+        res.data.forEach(object => {
+          console.log(object);
+          m.set(counter++, object);
+        });
 
         // Convert Object to Map
-        let m = new Map(Object.entries(res.data));
+        // let m = new Map(Object.entries(res.data));
 
         // Calculate median of close values to find outliers (note some have null values!)
-        let close_values = [...m.entries()].map(a => (a[1] == null ? 0.0 : a[1].close));
+        // let close_values = [...m.entries()].map(a => (a[1] == null ? 0.0 : a[1].close));
+        let close_values = get_good_close_values(m);
         console.log(close_values);
+
         let mc = median(close_values);
         setMedianClose(mc);
 
         console.log(...m.entries());
-        // Filter out null values, and where close differ from median with > 2% 
-        m = [...m.entries()]
-          .filter(x => x[1] != null)
-          .filter(x => x[1].bid != null && x[1].ask != null)
-          .filter(x => (x[1].close / mc > 0.98) && (x[1].close / mc < 1.02));
-        // We really need it as a Map()
-        m = new Map(m);
+        m = filter_outliers_and_errors(mc, m);
+
+        console.log("All filtered data");
+        console.log(m);
+        console.log("Done");
 
         setTicker(m);
 
@@ -95,12 +134,12 @@ function App() {
           .filter((x) => x[1].ask !== null)
           .reduce((a, b) => a[1].ask < b[1].ask ? a : b);
 
-
         setBestBid(bestBid[1].bid);
         setBestAsk(bestAsk[1].ask);
         return res;
       }).catch(err => {
-        console.error(err)
+        setError("Failed to fetch data");
+        console.error("Error:" + err.toString())
       });
   }
 
@@ -226,7 +265,6 @@ function App() {
               <Switch key={"Bid"} label={"Bid"} onClick={handleClickBid} color={statusBid} />
               <Switch key={"Ask"} label={"Ask"} onClick={handleClickAsk} color={statusAsk} />
               <Switch key={"Spread"} label={"Spread"} onClick={handleClickSpread} color={statusSpread} />
-
             </div>
           </Col>
         </Row>
@@ -235,15 +273,14 @@ function App() {
             {
               [...ticker.keys()].map(k => (
               <div key={k} className="market_container">
-                <CryptoExchange decimals={decimals} key={k} name={k} data={ticker.get(k)} bestBid={bestBid} bestAsk={bestAsk} />
+                <CryptoExchange decimals={decimals} key={k} name={ticker.get(k).exchange} data={ticker.get(k)} bestBid={bestBid} bestAsk={bestAsk} />
               </div>
             ))}
           </Col>
         </Row>
         <Row>
-          {
-            
-          }
+          <Col><p style={{color: "red"}}>{error}</p>
+          </Col>
         </Row>
 
       </Container>
